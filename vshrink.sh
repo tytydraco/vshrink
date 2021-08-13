@@ -25,7 +25,7 @@ shrink() {
 
 	[[ "$width" -gt 720 ]] && args+=("-vf" "scale='-2:720'")
 	[[ "$rate" -gt 24 ]] && args+=("-vsync" "vfr" "-r" "24")
-	[[ "${#args[@]}" -eq 0 && "$extension" != "mkv" ]] && args+=("-c:av" "copy")
+	[[ "${#args[@]}" -eq 0 && "$extension" != "mkv" ]] && args+=("-acodec" "copy" "-vcodec" "copy")
 	[[ "${#args[@]}" -eq 0 ]] && return
 
 	echo "[SHRINKING] $filename"
