@@ -10,6 +10,8 @@ shrink() {
 	local width
 	local rate
 	
+	local tmp
+	
 	local args
 	args=()
 	
@@ -19,22 +21,19 @@ shrink() {
 	extension="${filename##*.}"
 	video_no_ext="${video%.*}"
 	
-	metadata="$(ffprobe -v error -select_streams v:0 -show_entries stream=height,r_frame_rate -of csv=p=0 "$video")"
-	width="$(echo "$metadata" | awk -F , '{print $1}')"
-	rate="$(( "$(echo "$metadata" | awk -F , '{print $2}')" )) "
-
-	[[ "$width" -gt 720 ]] && args+=("-vf" "scale='-2:720'")
-	[[ "$rate" -gt 24 ]] && args+=("-vsync" "vfr" "-r" "24")
-	[[ "${#args[@]}" -eq 0 && "$extension" == "mkv" ]] && return
+	tmp="tmp.$extension"
+	
+	height="$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$video")"
+	[[ "$height" -le 720 ]] && return
 
 	echo "[SHRINKING] $filename"
-	if ffmpeg -y -i "$video" -f matroska "${args[@]}" tmp
+	if ffmpeg -y -i "$video" -vf scale="-2:720" "$tmp"
 	then
 		rm -f "$video"
-		mv tmp "$video_no_ext.mkv"	
+		mv "$tmp" "$video_no_ext.mkv"	
 	else
 		echo "[ERROR]"
-		rm tmp
+		rm "$tmp"
 	fi
 }
 
