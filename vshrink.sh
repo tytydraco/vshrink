@@ -19,7 +19,6 @@ shrink() {
 
 	filename=$(basename -- "$video")
 	extension="${filename##*.}"
-	video_no_ext="${video%.*}"
 	
 	tmp="tmp.$extension"
 	
