@@ -26,7 +26,7 @@ shrink() {
 	[[ "$height" -le 720 ]] && return
 
 	echo "[SHRINKING] $filename"
-	if ffmpeg -y -i "$video" -vf scale="-2:720" "$tmp"
+	if ffmpeg -y -i "$video" -map 0 -scodec copy -vf scale="-2:720" "$tmp"
 	then
 		rm -f "$video"
 		mv "$tmp" "$video"	
