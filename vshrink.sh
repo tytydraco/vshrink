@@ -30,7 +30,7 @@ shrink() {
 	if ffmpeg -y -i "$video" -vf scale="-2:720" "$tmp"
 	then
 		rm -f "$video"
-		mv "$tmp" "$video_no_ext.mkv"	
+		mv "$tmp" "$video"	
 	else
 		echo "[ERROR]"
 		rm "$tmp"
