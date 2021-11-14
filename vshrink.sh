@@ -6,14 +6,7 @@ shrink() {
 	local filename
 	local extension
 	
-	local metadata
-	local width
-	local rate
-	
 	local tmp
-	
-	local args
-	args=()
 	
 	video="$1"
 
@@ -29,7 +22,7 @@ shrink() {
 	if ffmpeg -y -i "$video" -map 0 -scodec copy -vf scale="-2:720" "$tmp"
 	then
 		rm -f "$video"
-		mv "$tmp" "$video"	
+		mv "$tmp" "$video"
 	else
 		echo "[ERROR]"
 		rm "$tmp"
